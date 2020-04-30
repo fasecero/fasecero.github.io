@@ -159,9 +159,10 @@ tasasAnteriores <- aggregate(tasasAnteriores, by = list(tasasAnteriores$countrie
   pathInteractivo <- paste(directorioInteractivo, '/', archivoInteractivo, sep = ""); 
   htmlwidgets::saveWidget(gr10Interactivo, archivoInteractivo, title = 'CoronaLea 2.0');
   if(file.exists(pathInteractivo)) unlink(pathInteractivo);
-  file.copy(archivoInteractivo, directorioInteractivo);
+  if(file.copy(archivoInteractivo, directorioInteractivo)) unlink(archivoInteractivo);
 
-system('cd ~/covid/publica/fasecero.github.io');
+#system('cd ~/covid/publica/fasecero.github.io');
+setwd(directorioInteractivo)
 system('git add .');
 system(paste('git commit -m\'Automatica ', ultimaFecha, '\'', sep = ""));
 system('git push origin master');
