@@ -250,8 +250,8 @@ grafico15 <- grafico12 + grafico14;
 grafico12 <- grafico11 + labs(caption = element_blank());
 grafico16 <- grafico11 + grafico13;
 
-ggsave(paste(pathGraficos, '/', 'casosPorContinente', ultimaFecha, ".png", sep = ""), plot = grafico15, width = grWidth, height = grHeight*2/3, dpi = grDpi, units = grUnits, device= grDevice);
-ggsave(paste(pathGraficos, '/', 'muertesPorContinente', ultimaFecha, ".png", sep = ""), plot = grafico16, width = grWidth, height = grHeight*2/3, dpi = grDpi, units = grUnits, device= grDevice);
+ggsave(paste(pathGraficos, '/', 'muertesPorContinente', ultimaFecha, ".png", sep = ""), plot = grafico15, width = grWidth, height = grHeight*2/3, dpi = grDpi, units = grUnits, device= grDevice);
+ggsave(paste(pathGraficos, '/', 'casosPorContinente', ultimaFecha, ".png", sep = ""), plot = grafico16, width = grWidth, height = grHeight*2/3, dpi = grDpi, units = grUnits, device= grDevice);
 
 
 
