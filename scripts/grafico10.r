@@ -83,7 +83,8 @@ colores <- gg_color_hue(7);
 
   #grafico10
   gra10 <- ggplot(
-    data = datoscovidok[datoscovidok$countriesAndTerritories %in% paises & datoscovidok$casesAcum > 100,], 
+    #data = datoscovidok[datoscovidok$countriesAndTerritories %in% paises & datoscovidok$casesAcum > 100,],
+    data = datoscovidok[datoscovidok$countriesAndTerritories %in% paises & datoscovidok$casesAcum > 100 & datoscovidok$countriesAndTerritories != 'Ecuador',],
     mapping = aes( 
       x = casesAcum, 
       y = casesAcumSemana, 
