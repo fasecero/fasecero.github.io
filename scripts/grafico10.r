@@ -194,8 +194,8 @@ df2 <- rbind(datoscovidok[,c('realDate', 'diasDuplicar', 'countriesAndTerritorie
   library(plotly);
   gr10Interactivo <- ggplotly(gra10paraWeb);
   pathInteractivo <- paste(directorioInteractivo, '/', archivoInteractivo, sep = ""); 
-  htmlwidgets::saveWidget(gr10Interactivo, archivoInteractivo, title = 'CoronaLea 2.0');
   if(file.exists(pathInteractivo)) unlink(pathInteractivo);
+  htmlwidgets::saveWidget(gr10Interactivo, archivoInteractivo, title = 'CoronaLea 2.0');
   if(file.copy(archivoInteractivo, directorioInteractivo)) unlink(archivoInteractivo);
 
 #graficos continentes
@@ -294,7 +294,6 @@ ggsave(paste(pathGraficos, '/', 'proyeccionArgentina', ultimaFecha, ".png", sep 
 
 
 
-#system('cd ~/covid/publica/fasecero.github.io');
 setwd(directorioInteractivo)
 system('git add .');
 system(paste('git commit -m\'Automatica ', ultimaFecha, '\'', sep = ""));
