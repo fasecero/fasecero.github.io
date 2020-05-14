@@ -80,6 +80,20 @@ continente$casosAcumSemanaCada100Mil <- continente$casesAcumSemana / continente$
 
 colores <- gg_color_hue(7);
 
+#dias duplicacion y proyecccion argentina
+datosargentina <- datoscovidok[datoscovidok$countriesAndTerritories == 'Argentina',];
+datosargentina <- datosargentina[rev(order(datosargentina$realDate)), ];
+ultimosDatos <- head(datosargentina, n= 15);
+ultimoDato <- head(ultimosDatos, n= 1);
+primerDato <- tail(ultimosDatos, n= 1);
+model <- lm(diasDuplicar ~ realDate, data = ultimosDatos);
+nuevosDias <- NULL;
+nuevosDias$realDate <- seq(max(ultimosDatos$realDate)+1,by = 'day', length.out = 30);
+nuevosDias$diasDuplicar <- predict(model, newdata = nuevosDias);
+df <- data.frame(realDate = nuevosDias$realDate, diasDuplicar = nuevosDias$diasDuplicar, countriesAndTerritories = rep('Argentina (proyección)', 30), continentExp = rep('America', 30));
+
+df2 <- rbind(datoscovidok[,c('realDate', 'diasDuplicar', 'countriesAndTerritories', 'continentExp')], df);
+
 
   #grafico10
   gra10 <- ggplot(
@@ -254,6 +268,29 @@ grafico16 <- grafico11 + grafico13;
 ggsave(paste(pathGraficos, '/', 'muertesPorContinente', ultimaFecha, ".png", sep = ""), plot = grafico15, width = grWidth, height = grHeight*2/3, dpi = grDpi, units = grUnits, device= grDevice);
 ggsave(paste(pathGraficos, '/', 'casosPorContinente', ultimaFecha, ".png", sep = ""), plot = grafico16, width = grWidth, height = grHeight*2/3, dpi = grDpi, units = grUnits, device= grDevice);
 
+
+#dias dup
+graficoProyeccion <- ggplot(
+  data = df2[df2$countriesAndTerritories %in% paises2 | df2$countriesAndTerritories == 'Argentina (proyección)',],
+  mapping = aes(x=realDate, y=diasDuplicar, color = countriesAndTerritories)) +
+  geom_line(aes(linetype = continentExp)) +
+  #geom_smooth(aes(color=countriesAndTerritories, linetype = continentExp), se = FALSE) +
+  #geom_point() +
+  geom_hline(aes(yintercept = 25), color = 'red', linetype = 'dashed', show.legend = FALSE) +
+  geom_hline(aes(yintercept = 15), color = 'red', linetype = 'dashed', show.legend = FALSE) +
+  geom_hline(aes(yintercept = 5), color = 'red', linetype = 'dashed', show.legend = FALSE) +
+  geom_text(aes(as.Date('2020-03-15'), 25, label="Fase: Reapertura progresiva", vjust = -1, hjust = 0) , color = 'grey', size= 4) +
+  geom_text(aes(as.Date('2020-03-15'), 15, label="Fase: Segmentacion geografica", vjust = -1, hjust = 0) , color = 'grey', size= 4) +
+  geom_text(aes(as.Date('2020-03-15'), 5, label="Fase: Aislamiento administrado", vjust = -1, hjust = 0) , color = 'grey', size= 4) +
+  theme(legend.position="bottom") +
+  coord_cartesian(ylim = c(0,40), xlim = c(as.Date('2020-03-15'), max(df2$realDate)));
+
+colores <- gg_color_hue(9);
+colores[2] <- colores[1];
+
+graficoProyeccion <- graficoProyeccion + scale_colour_manual(values = colores);
+
+ggsave(paste(pathGraficos, '/', 'proyeccionArgentina', ultimaFecha, ".png", sep = ""), plot = graficoProyeccion, width = grWidth, height = grHeight, dpi = grDpi, units = grUnits, device= grDevice);
 
 
 
