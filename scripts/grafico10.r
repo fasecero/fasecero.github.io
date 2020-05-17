@@ -2,6 +2,7 @@
 library(readxl);
 library(ggplot2);
 library(patchwork);
+library(scales);
 gg_color_hue <- function(n) {
   hues = seq(15, 375, length = n + 1)
   hcl(h = hues, l = 65, c = 100)[1:n]
@@ -17,6 +18,8 @@ datoscovidok <- read_excel(destfile);
 #options
 paises <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Ecuador', 'United_States_of_America', 'Germany',  'Italy', 'South_Korea', 'China', 'Iran', 'Turkey');
 paises2 <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Germany', 'Italy', 'United_States_of_America', 'China');
+#paisesAmericaDelSur <- list('Argentina', 'Chile', 'Uruguay', 'Bolivia', 'Brazil', 'Paraguay', 'Ecuador', 'Colombia', 'Venezuela', 'Peru');
+paisesAmericaDelSur <- list('Argentina', 'Chile', 'Brazil',  'Ecuador', 'Colombia', 'Peru');
 theme_set(theme_bw());
 caption = 'Elaboarción propia en base a datos del ECDC.';
 grUnits <- "in";
@@ -94,6 +97,7 @@ df <- data.frame(realDate = nuevosDias$realDate, diasDuplicar = nuevosDias$diasD
 
 df2 <- rbind(datoscovidok[,c('realDate', 'diasDuplicar', 'countriesAndTerritories', 'continentExp')], df);
 
+#------------------------------------------------------------------------------------------------
 
   #grafico10
   gra10 <- ggplot(
@@ -293,6 +297,45 @@ graficoProyeccion <- graficoProyeccion + scale_colour_manual(values = colores);
 ggsave(paste(pathGraficos, '/', 'proyeccionArgentina', ultimaFecha, ".png", sep = ""), plot = graficoProyeccion, width = grWidth, height = grHeight, dpi = grDpi, units = grUnits, device= grDevice);
 
 
+#graficos latam
+grLatam1 <- ggplot(
+  data = datoscovidok[datoscovidok$countriesAndTerritories %in% paisesAmericaDelSur, ],
+  mapping = aes( 
+    x = realDate, 
+    y = deathsAcum, 
+    color = countriesAndTerritories)) + 
+  geom_line() +
+  #geom_point() +
+  #scale_x_log10(labels =   scales::comma_format()) + 
+  scale_y_continuous(labels = scales::comma_format()) +
+  scale_x_date(breaks = pretty_breaks(10)) +
+  theme(legend.position="bottom", legend.title  = element_blank()) +
+  labs(x = element_blank(), y = 'Muertes', caption = caption)  +
+  coord_cartesian(xlim = c(as.Date('2020-04-01'), as.Date(ultimaFecha)));
+
+grLatam2 <- ggplot(
+  data = datoscovidok[datoscovidok$countriesAndTerritories %in% paisesAmericaDelSur, ],
+  mapping = aes( 
+    x = realDate, 
+    y = deathsAcum / popData2018 * 100000, 
+    color = countriesAndTerritories)) + 
+  geom_line() +
+  #geom_point() +
+  #scale_x_log10(labels =   scales::comma_format()) + 
+  scale_y_continuous(labels = scales::comma_format()) +
+  scale_x_date(breaks = pretty_breaks(10)) +
+  theme(legend.position="bottom", legend.title  = element_blank()) +
+  labs(x = element_blank(), y = 'Muertes cada 100.000 habitantes', caption = caption) + 
+  coord_cartesian(xlim = c(as.Date('2020-04-01'), as.Date(ultimaFecha)));
+
+grLatam1 <- grLatam1 + labs(caption = element_blank());
+grMuertesLA <- grLatam1 + grLatam2 + plot_annotation(
+  title = 'Comparación cantidad de muertes por Covid-19 en países de latinoamérica'
+  #subtitle = 'These 3 plots will reveal yet-untold secrets about our beloved data-set',
+  #caption = 'Disclaimer: None of these plots are insightful'
+);
+
+ggsave(paste(pathGraficos, '/', 'muertesLA', ultimaFecha, ".png", sep = ""), plot = grMuertesLA, width = grWidth, height = grHeight*2/3, dpi = grDpi, units = grUnits, device= grDevice);
 
 setwd(directorioInteractivo)
 system('git add .');
