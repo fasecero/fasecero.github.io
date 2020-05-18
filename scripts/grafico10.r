@@ -214,7 +214,8 @@ grafico11 <- ggplot(
   scale_x_log10(labels = scales::comma_format()) + 
   scale_y_log10(labels = scales::comma_format()) + 
   theme(legend.position="bottom", legend.title  = element_blank()) +
-  labs(x = 'Casos confirmados', y = 'Casos semanales', caption = caption);
+  labs(x = 'Casos confirmados', y = 'Casos semanales', caption = caption) + 
+  coord_cartesian(ylim = c(1000, max(continente$casesAcumSemana)));
 
 grafico13 <- ggplot(
   data = continente[continente$casesAcum > 1000, ], 
