@@ -338,6 +338,29 @@ grMuertesLA <- grLatam1 + grLatam2 + plot_annotation(
 
 ggsave(paste(pathGraficos, '/', 'muertesLA', ultimaFecha, ".png", sep = ""), plot = grMuertesLA, width = grWidth, height = grHeight*2/3, dpi = grDpi, units = grUnits, device= grDevice);
 
+#grafico argentina EJE SECUNDARIO
+
+factorSecundario <- 100000;
+
+grArg <- ggplot(
+  data = datoscovidok[datoscovidok$countriesAndTerritories == 'Argentina',],
+  mapping = aes(
+    x = realDate
+  )) +
+  geom_line(aes(y = casesAcum, colour = 'Casos')) +
+  geom_line(aes(y = tasaDiaria*factorSecundario, colour = 'Tasa')) +
+  geom_point(aes(y=casesAcum, colour = 'Casos')) +
+  geom_point(aes(y = tasaDiaria*factorSecundario, colour = 'Tasa')) +
+  scale_y_continuous(sec.axis = sec_axis(~./factorSecundario, name = "Tasa", labels = scales::percent_format(accuracy = 1)), labels = scales::comma_format()) + 
+  theme(
+    legend.position="bottom", 
+    legend.title  = element_blank()) +
+  labs(y = 'Casos confirmados', x = element_blank(), title = "Casos confirmados y tasa diara de crecimiento Argentina", caption = caption) +
+  coord_cartesian(xlim = c(as.Date('2020-03-15'), max(ultimaFecha)), ylim = c(0, max(datoscovidok[datoscovidok$countriesAndTerritories == 'Argentina', c('casesAcum')])));
+
+ggsave(paste(pathGraficos, '/', 'Arg', ultimaFecha, ".png", sep = ""), plot = grArg, width = grWidth, height = grHeight, dpi = grDpi, units = grUnits, device= grDevice);
+
+
 setwd(directorioInteractivo)
 system('git add .');
 system(paste('git commit -m\'Automatica ', ultimaFecha, '\'', sep = ""));
