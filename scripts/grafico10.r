@@ -348,9 +348,9 @@ grArg <- ggplot(
     x = realDate
   )) +
   geom_line(aes(y = casesAcum, colour = 'Casos')) +
-  geom_line(aes(y = tasaDiaria*factorSecundario, colour = 'Tasa')) +
+  geom_line(aes(y = tasaDiaria*factorSecundario, colour = 'Tasa diaria acumulariva ultimos 7 días')) +
   geom_point(aes(y=casesAcum, colour = 'Casos')) +
-  geom_point(aes(y = tasaDiaria*factorSecundario, colour = 'Tasa')) +
+  geom_point(aes(y = tasaDiaria*factorSecundario, colour = 'Tasa diaria acumulariva ultimos 7 días')) +
   scale_y_continuous(sec.axis = sec_axis(~./factorSecundario, name = "Tasa", labels = scales::percent_format(accuracy = 1)), labels = scales::comma_format()) + 
   theme(
     legend.position="bottom", 
