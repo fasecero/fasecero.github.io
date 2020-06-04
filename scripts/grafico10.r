@@ -288,7 +288,8 @@ graficoProyeccion <- ggplot(
   geom_text(aes(as.Date('2020-03-15'), 15, label="Fase: Segmentacion geografica", vjust = -1, hjust = 0) , color = 'grey', size= 4) +
   geom_text(aes(as.Date('2020-03-15'), 5, label="Fase: Aislamiento administrado", vjust = -1, hjust = 0) , color = 'grey', size= 4) +
   theme(legend.position="bottom") +
-  coord_cartesian(ylim = c(0,40), xlim = c(as.Date('2020-03-15'), max(df2$realDate)));
+  coord_cartesian(ylim = c(0,40), xlim = c(as.Date('2020-03-15'), max(df2$realDate))) +
+  labs(y = 'Dias para duplicar', x = element_blank());
 
 colores <- gg_color_hue(9);
 colores[2] <- colores[1];
