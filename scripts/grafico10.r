@@ -76,10 +76,10 @@ datoscovidok$subContinente <- ifelse(datoscovidok$countriesAndTerritories %in% n
 datoscovidok$subContinente <- ifelse(datoscovidok$subContinente == 'America', 'America Latina y Caribe', datoscovidok$subContinente);
 continente <- aggregate(datoscovidok[, c('cases', 'deaths', 'casesAcum', 'casesAcumSemana', 'deathsAcum')], by = list(datoscovidok$realDate, datoscovidok$subContinente), FUN = sum)
 #aggregate(casesAcum ~ countriesAndTerritories, data = todosMayores, FUN = min)
-poblacion <- aggregate(popData2018 ~ subContinente, data = datoscovidok[datoscovidok$realDate == as.Date('2020-04-27'),], FUN = sum);
+poblacion <- aggregate(popData2019 ~ subContinente, data = datoscovidok[datoscovidok$realDate == as.Date('2020-04-27'),], FUN = sum);
 continente <- merge(continente, poblacion, by.x = 'Group.2', by.y ="subContinente", all.x = TRUE);
-continente$casosAcumCada100Mil <- continente$casesAcum / continente$popData2018 * 100000;
-continente$casosAcumSemanaCada100Mil <- continente$casesAcumSemana / continente$popData2018 * 100000;
+continente$casosAcumCada100Mil <- continente$casesAcum / continente$popData2019 * 100000;
+continente$casosAcumSemanaCada100Mil <- continente$casesAcumSemana / continente$popData2019 * 100000;
 
 colores <- gg_color_hue(7);
 
@@ -184,7 +184,7 @@ df2 <- rbind(datoscovidok[,c('realDate', 'diasDuplicar', 'countriesAndTerritorie
   
 #interactivo para la web
   gra10paraWeb <- ggplot(
-    data = datoscovidok[datoscovidok$casesAcum > 100 & datoscovidok$popData2018 > 10000000,], 
+    data = datoscovidok[datoscovidok$casesAcum > 100 & datoscovidok$popData2019 > 10000000,], 
     mapping = aes( 
       x = casesAcum, 
       y = casesAcumSemana, 
@@ -247,7 +247,7 @@ grafico14 <- ggplot(
   data = continente[continente$Group.1 < (as.Date(max(continente$Group.1)) - 2),], 
   mapping = aes( 
     x = Group.1, 
-    y = deathsAcum / popData2018 * 100000, 
+    y = deathsAcum / popData2019 * 100000, 
     color = Group.2)) + 
   geom_line() +
   #geom_point() +
@@ -319,7 +319,7 @@ grLatam2 <- ggplot(
   data = datoscovidok[datoscovidok$countriesAndTerritories %in% paisesAmericaDelSur, ],
   mapping = aes( 
     x = realDate, 
-    y = deathsAcum / popData2018 * 100000, 
+    y = deathsAcum / popData2019 * 100000, 
     color = countriesAndTerritories)) + 
   geom_line() +
   #geom_point() +
