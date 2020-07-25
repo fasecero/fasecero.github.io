@@ -299,6 +299,32 @@ graficoProyeccion <- graficoProyeccion + scale_colour_manual(values = colores);
 ggsave(paste(pathGraficos, '/', 'proyeccionArgentina', ultimaFecha, ".png", sep = ""), plot = graficoProyeccion, width = grWidth, height = grHeight, dpi = grDpi, units = grUnits, device= grDevice);
 
 
+#dias dup
+paises4 <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Germany', 'Italy', 'United_States_of_America');
+graficoProyeccion2 <- ggplot(
+  data = df2[df2$countriesAndTerritories %in% paises4 | df2$countriesAndTerritories == 'Argentina (proyección)',],
+  mapping = aes(x=realDate, y=diasDuplicar, color = countriesAndTerritories)) +
+  #geom_line(aes(linetype = continentExp)) +
+  geom_smooth(aes(color=countriesAndTerritories, linetype = continentExp), se = FALSE) +
+  #geom_point() +
+  geom_hline(aes(yintercept = 25), color = 'red', linetype = 'dashed', show.legend = FALSE) +
+  geom_hline(aes(yintercept = 15), color = 'red', linetype = 'dashed', show.legend = FALSE) +
+  geom_hline(aes(yintercept = 5), color = 'red', linetype = 'dashed', show.legend = FALSE) +
+  geom_text(aes(as.Date('2020-03-15'), 25, label="Fase: Reapertura progresiva", vjust = -1, hjust = 0) , color = 'grey', size= 4) +
+  geom_text(aes(as.Date('2020-03-15'), 15, label="Fase: Segmentacion geografica", vjust = -1, hjust = 0) , color = 'grey', size= 4) +
+  geom_text(aes(as.Date('2020-03-15'), 5, label="Fase: Aislamiento administrado", vjust = -1, hjust = 0) , color = 'grey', size= 4) +
+  theme(legend.position="bottom") +
+  coord_cartesian(ylim = c(0,40), xlim = c(as.Date('2020-03-15'), max(df2$realDate))) +
+  labs(y = 'Dias para duplicar', x = element_blank(), caption = caption);
+
+colores <- gg_color_hue(9);
+colores[2] <- colores[1];
+
+graficoProyeccion2 <- graficoProyeccion2 + scale_colour_manual(values = colores);
+
+ggsave(paste(pathGraficos, '/', 'smooth', ultimaFecha, ".png", sep = ""), plot = graficoProyeccion2, width = grWidth, height = grHeight, dpi = grDpi, units = grUnits, device= grDevice);
+
+
 #graficos latam
 grLatam1 <- ggplot(
   data = datoscovidok[datoscovidok$countriesAndTerritories %in% paisesAmericaDelSur, ],
@@ -360,6 +386,8 @@ grArg <- ggplot(
   coord_cartesian(xlim = c(as.Date('2020-03-15'), max(ultimaFecha)), ylim = c(0, max(datoscovidok[datoscovidok$countriesAndTerritories == 'Argentina', c('casesAcum')])));
 
 ggsave(paste(pathGraficos, '/', 'Arg', ultimaFecha, ".png", sep = ""), plot = grArg, width = grWidth, height = grHeight, dpi = grDpi, units = grUnits, device= grDevice);
+
+
 
 
 setwd(directorioInteractivo)
