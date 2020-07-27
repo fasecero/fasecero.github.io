@@ -367,7 +367,7 @@ ggsave(paste(pathGraficos, '/', 'muertesLA', ultimaFecha, ".png", sep = ""), plo
 
 #grafico argentina EJE SECUNDARIO
 
-factorSecundario <- 100000;
+factorSecundario <- 2000000;
 
 grArg <- ggplot(
   data = datoscovidok[datoscovidok$countriesAndTerritories == 'Argentina',],
