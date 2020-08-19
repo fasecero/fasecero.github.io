@@ -17,9 +17,10 @@ datoscovidok <- read_excel(destfile);
 
 #options
 paises <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Ecuador', 'United_States_of_America', 'Germany',  'Italy', 'South_Korea', 'China', 'Iran', 'Turkey');
-paises2 <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Germany', 'Italy', 'United_States_of_America', 'China');
+paises2 <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Germany', 'Italy', 'United_States_of_America', 'China', 'Mexico');
 #paisesAmericaDelSur <- list('Argentina', 'Chile', 'Uruguay', 'Bolivia', 'Brazil', 'Paraguay', 'Ecuador', 'Colombia', 'Venezuela', 'Peru');
-paisesAmericaDelSur <- list('Argentina', 'Chile', 'Brazil',  'Ecuador', 'Colombia', 'Peru');
+paisesAmericaDelSur <- list('Argentina', 'Chile', 'Brazil',  'Ecuador', 'Colombia', 'Peru', 'Mexico');
+paises4 <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Germany', 'Italy', 'United_States_of_America', 'Mexico');
 theme_set(theme_bw());
 caption = 'Elaboarción propia en base a datos del ECDC.';
 grUnits <- "in";
@@ -291,7 +292,7 @@ graficoProyeccion <- ggplot(
   coord_cartesian(ylim = c(0,40), xlim = c(as.Date('2020-03-15'), max(df2$realDate))) +
   labs(y = 'Dias para duplicar', x = element_blank());
 
-colores <- gg_color_hue(9);
+colores <- gg_color_hue(10);
 colores[2] <- colores[1];
 
 graficoProyeccion <- graficoProyeccion + scale_colour_manual(values = colores);
@@ -300,7 +301,7 @@ ggsave(paste(pathGraficos, '/', 'proyeccionArgentina', ultimaFecha, ".png", sep 
 
 
 #dias dup
-paises4 <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Germany', 'Italy', 'United_States_of_America');
+
 graficoProyeccion2 <- ggplot(
   data = df2[df2$countriesAndTerritories %in% paises4 | df2$countriesAndTerritories == 'Argentina (proyección)',],
   mapping = aes(x=realDate, y=diasDuplicar, color = countriesAndTerritories)) +
@@ -314,10 +315,10 @@ graficoProyeccion2 <- ggplot(
   geom_text(aes(as.Date('2020-03-15'), 15, label="Fase: Segmentacion geografica", vjust = -1, hjust = 0) , color = 'grey', size= 4) +
   geom_text(aes(as.Date('2020-03-15'), 5, label="Fase: Aislamiento administrado", vjust = -1, hjust = 0) , color = 'grey', size= 4) +
   theme(legend.position="bottom") +
-  coord_cartesian(ylim = c(0,40), xlim = c(as.Date('2020-03-15'), max(df2$realDate))) +
+  coord_cartesian(ylim = c(0,60), xlim = c(as.Date('2020-03-15'), max(df2$realDate))) +
   labs(y = 'Dias para duplicar', x = element_blank(), caption = caption);
 
-colores <- gg_color_hue(9);
+colores <- gg_color_hue(10);
 colores[2] <- colores[1];
 
 graficoProyeccion2 <- graficoProyeccion2 + scale_colour_manual(values = colores);
@@ -367,7 +368,7 @@ ggsave(paste(pathGraficos, '/', 'muertesLA', ultimaFecha, ".png", sep = ""), plo
 
 #grafico argentina EJE SECUNDARIO
 
-factorSecundario <- 2000000;
+factorSecundario <- 5000000;
 
 grArg <- ggplot(
   data = datoscovidok[datoscovidok$countriesAndTerritories == 'Argentina',],
