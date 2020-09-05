@@ -19,7 +19,7 @@ datoscovidok <- read_excel(destfile);
 paises <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Ecuador', 'United_States_of_America', 'Germany',  'Italy', 'South_Korea', 'China', 'Iran', 'Turkey');
 paises2 <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Germany', 'Italy', 'United_States_of_America', 'China', 'Mexico');
 #paisesAmericaDelSur <- list('Argentina', 'Chile', 'Uruguay', 'Bolivia', 'Brazil', 'Paraguay', 'Ecuador', 'Colombia', 'Venezuela', 'Peru');
-paisesAmericaDelSur <- list('Argentina', 'Chile', 'Brazil',  'Ecuador', 'Colombia', 'Peru', 'Mexico');
+paisesAmericaDelSur <- list('Argentina', 'Chile', 'Brazil',  'Ecuador', 'Colombia', 'Peru', 'Mexico', 'Paraguay', 'Bolivia');
 paises4 <- list('Argentina', 'Brazil', 'Chile', 'Colombia', 'Germany', 'Italy', 'United_States_of_America', 'Mexico');
 theme_set(theme_bw());
 caption = 'Elaboarción propia en base a datos del ECDC.';
