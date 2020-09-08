@@ -124,7 +124,7 @@ df2 <- rbind(datoscovidok[,c('realDate', 'diasDuplicar', 'countriesAndTerritorie
                      fill=countriesAndTerritories)) +
     geom_col() + 
     coord_flip() + 
-    scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+    scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
     theme(legend.position = "none", axis.title.x = element_blank(), axis.text.x = element_blank()) +  
     labs(
       title=paste("Tasa diaria de crecimiento al", ultimaFecha), 
@@ -379,7 +379,7 @@ grArg <- ggplot(
   geom_line(aes(y = tasaDiaria*factorSecundario, colour = 'Tasa diaria acumulariva ultimos 7 días')) +
   geom_point(aes(y=casesAcum, colour = 'Casos')) +
   geom_point(aes(y = tasaDiaria*factorSecundario, colour = 'Tasa diaria acumulariva ultimos 7 días')) +
-  scale_y_continuous(sec.axis = sec_axis(~./factorSecundario, name = "Tasa", labels = scales::percent_format(accuracy = 1)), labels = scales::comma_format()) + 
+  scale_y_continuous(sec.axis = sec_axis(~./factorSecundario, name = "Tasa", labels = scales::percent_format(accuracy = 0.1)), labels = scales::comma_format()) + 
   theme(
     legend.position="bottom", 
     legend.title  = element_blank()) +
