@@ -390,7 +390,7 @@ ggsave(paste(pathGraficos, '/', 'Arg', ultimaFecha, ".png", sep = ""), plot = gr
 
 
 
-
+  
 setwd(directorioInteractivo)
 system('git add .');
 system(paste('git commit -m\'Automatica ', ultimaFecha, '\'', sep = ""));
